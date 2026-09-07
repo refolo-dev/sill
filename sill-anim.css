@@ -1,138 +1,94 @@
-/* THE SILL — animation & 3D layer overlay.
-   Appended to sill.css — no rules removed or renamed. */
+/* THE SILL — motion layer v5 (night city).
+   Runs on ALL devices, including prefers-reduced-motion clients — the
+   build-up IS the product (owner decision). Cheap: opacity/transform/filter. */
 
-@media (prefers-reduced-motion: reduce) {
-  .tilt-scene, .tilt-layer, .machine-cursor, .skyline-flicker {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
-/* 3D scene: cityscape inside perspective. Reacts to cursor via JS. */
-.tilt-scene {
-  perspective: 900px;
-  perspective-origin: 50% 60%;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-.tilt-layer {
-  transform: translateZ(0);
-  transition: transform 480ms cubic-bezier(.22,.61,.36,1);
-  will-change: transform;
-}
-.tilt-layer.far { transform: translateZ(-40px) scale(1.06); }
-.tilt-layer.mid { transform: translateZ(0) scale(1); }
-.tilt-layer.near { transform: translateZ(40px) scale(0.97); }
-
-/* hover-ripple on windows */
-.city .window {
-  transition: background 200ms ease, box-shadow 200ms ease, transform 200ms ease;
-}
-.city:hover .window { transition-duration: 80ms; }
-.city .window:hover {
-  background: #FFB84D;
-  box-shadow: 0 0 18px rgba(210,161,75,.55);
-  transform: scale(1.18);
-  z-index: 5;
+/* --- intro build-up: windows rise out of the dark, wave left->right --- */
+.city .cityscape { display: block; width: 100%; height: 100%; }
+.city .cityscape rect { transform-box: fill-box; transform-origin: 50% 100%; transition: filter 160ms ease; }
+.city .cityscape rect.rise { animation: windowRise 1100ms cubic-bezier(.22,.61,.36,1) both; }
+@keyframes windowRise {
+  0%   { opacity: 0; transform: translateY(34px) scaleY(.15); }
+  55%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) scaleY(1); }
 }
 
-/* flicker: a few random windows blink briefly. JS picks which. */
-.skyline-flicker { animation: skylineFlicker 220ms steps(1) 1; }
-@keyframes skylineFlicker {
-  0%   { background: #FFB84D; box-shadow: 0 0 24px rgba(210,161,75,.9); }
-  100% { background: inherit; box-shadow: none; }
+/* --- ambient sway: the city breathes with no pointer needed --- */
+@keyframes cityDrift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-9px, -2px); }
+  50%  { transform: translate(5px, -4px); }
+  75%  { transform: translate(10px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+.city .cityscape { animation: cityDrift 13s ease-in-out infinite; }
+
+/* --- horizon breathing light --- */
+@keyframes horizonBreathe { 0%, 100% { opacity: .8; } 50% { opacity: 1; } }
+.city-horizon { animation: horizonBreathe 8s ease-in-out infinite; }
+
+/* --- dot layers: pulse (breathe comes from sill.css) --- */
+@keyframes layerGlow { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.4); } }
+.city-layer { animation: breathe 7s ease-in-out infinite alternate, layerGlow 9s ease-in-out infinite; }
+
+/* --- window flicker (JS tags random rects) --- */
+.skyline-flicker { animation: winFlash 320ms ease-out 1; }
+@keyframes winFlash {
+  0%   { filter: brightness(2.8) drop-shadow(0 0 10px rgba(255,190,90,.95)); }
+  100% { filter: none; }
 }
 
-/* typewriter caret on hero kicker */
+/* --- window hover (inline SVG = real DOM) --- */
+.city .cityscape rect:hover { filter: brightness(1.9) drop-shadow(0 0 6px rgba(255,184,77,.85)); cursor: crosshair; }
+
+/* --- scanline sweep: a light band travels down the glass --- */
+.scanlines { overflow: hidden; }
+.scanlines::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 24%;
+  background: linear-gradient(180deg, transparent, rgba(255,214,150,.06), transparent);
+  animation: scanSweep 9s linear infinite;
+}
+@keyframes scanSweep { 0% { transform: translateY(-30%); } 100% { transform: translateY(430%); } }
+
+/* --- typewriter caret --- */
 .machine-cursor {
-  display: inline-block;
-  width: .55ch; height: 1em;
-  background: currentColor;
-  margin-left: 2px;
-  vertical-align: -.15em;
+  display: inline-block; width: .55ch; height: 1em;
+  background: currentColor; margin-left: 2px; vertical-align: -.15em;
   animation: caretBlink 900ms steps(1) infinite;
 }
-@keyframes caretBlink { 50% { opacity: 0 } }
+@keyframes caretBlink { 50% { opacity: 0; } }
 
-/* glitch on brand (one-shot) */
+/* --- brand glitch --- */
 @keyframes brandGlitch {
-  0%,100% { transform: translate(0,0); filter: none; }
-  20% { transform: translate(-2px, 1px); filter: hue-rotate(20deg); }
-  40% { transform: translate(2px, -1px); filter: hue-rotate(-20deg); }
-  60% { transform: translate(-1px, 0); }
-  80% { transform: translate(1px, 0); }
+  0%, 100% { transform: translate(0,0); filter: none; }
+  20% { transform: translate(-2px,1px); filter: hue-rotate(20deg); }
+  40% { transform: translate(2px,-1px); filter: hue-rotate(-20deg); }
+  60% { transform: translate(-1px,0); }
+  80% { transform: translate(1px,0); }
 }
 .brand.glitch { animation: brandGlitch 600ms steps(8) 1; }
 
-/* sound toggle */
+/* --- music toggle --- */
 .sound-toggle {
   position: fixed; right: 14px; bottom: 14px; z-index: 80;
   font: 12px/1 'Fragment Mono', ui-monospace, monospace;
-  letter-spacing: .04em;
-  color: var(--green);
-  background: rgba(10,13,10,.78);
-  border: 1px solid rgba(63,255,138,.35);
-  padding: 8px 10px;
-  cursor: pointer;
-  text-transform: uppercase;
-  backdrop-filter: blur(2px);
-  transition: all 180ms ease;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: #FFB84D; background: rgba(10,15,30,.82);
+  border: 1px solid rgba(255,184,77,.4); border-radius: 4px;
+  padding: 9px 12px; cursor: pointer;
+  backdrop-filter: blur(3px);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
 }
-.sound-toggle:hover { color: #FFB84D; border-color: #FFB84D; }
-.sound-toggle[aria-pressed="true"] { color: #FFB84D; border-color: #FFB84D; }
+.sound-toggle:hover, .sound-toggle[aria-pressed="true"] { border-color: #FFB84D; box-shadow: 0 0 16px rgba(255,184,77,.28); }
 .sound-toggle .dot {
   display: inline-block; width: 6px; height: 6px; border-radius: 50%;
   background: currentColor; margin-right: 6px; vertical-align: 1px;
 }
+.sound-toggle[aria-pressed="true"] .dot { animation: dotPulse 1.6s ease-in-out infinite; }
+@keyframes dotPulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
 
-/* smooth scroll on anchor jump */
+/* --- misc --- */
 html { scroll-behavior: smooth; }
-
-/* staggered reveal on key blocks */
-.reveal { opacity: 0; transform: translateY(8px); transition: opacity 600ms ease, transform 600ms ease; }
+.reveal { opacity: 0; transform: translateY(10px); transition: opacity .6s ease, transform .6s ease; }
 .reveal.in { opacity: 1; transform: none; }
-
-/* ==== v3: intro build + ambient motion (no cursor needed) ==== */
-/* windows grow out of the dark on first load, staggered by column */
-.city .cityscape rect { transform-box: fill-box; transform-origin: 50% 100%; }
-.city .cityscape { display: block; width: 100%; height: 100%; }
-
-@media (prefers-reduced-motion: reduce) {
-  .city .cityscape rect { animation: none !important; }
-  .city-layer { animation: none !important; }
-  .city-horizon { animation: none !important; }
-  .drift-dir { animation: none !important; }
-}
-
-/* slow ambient drift — city feels alive without any pointer */
-@keyframes cityDrift {
-  0%   { transform: translateX(0) translateY(0); }
-  50%  { transform: translateX(-14px) translateY(-3px); }
-  100% { transform: translateX(0) translateY(0); }
-}
-.city .cityscape { animation: cityDrift 26s ease-in-out infinite; }
-
-/* deep-breathing horizon light */
-@keyframes horizonBreathe {
-  0%, 100% { opacity: .85; }
-  50%      { opacity: 1; }
-}
-.city-horizon { animation: horizonBreathe 9s ease-in-out infinite; }
-
-/* layer dots pulse staggered (already breathe, add second slower one) */
-@keyframes layerGlow {
-  0%, 100% { filter: brightness(1); }
-  50%      { filter: brightness(1.35); }
-}
-.city-layer { animation: breathe 7s ease-in-out infinite alternate, layerGlow 11s ease-in-out infinite; }
-
-/* build-up intro: set via JS animation-delay per window */
-@keyframes windowRise {
-  0%   { opacity: 0; transform: translateY(26px) scaleY(.2); }
-  60%  { opacity: 1; }
-  100% { opacity: 1; transform: translateY(0) scaleY(1); }
-}
-.city .cityscape rect.rise { animation: windowRise 900ms cubic-bezier(.22,.61,.36,1) both; }
-
-/* gentle hover on individual windows (inline SVG — real DOM now) */
-.city .cityscape rect:hover { filter: brightness(1.9) drop-shadow(0 0 6px rgba(255,184,77,.8)); }
+.tilt-scene { perspective: 900px; perspective-origin: 50% 60%; transform-style: preserve-3d; }
+.tilt-layer { transition: transform 480ms cubic-bezier(.22,.61,.36,1); }
