@@ -1,0 +1,93 @@
+/* THE SILL — animation & 3D layer overlay.
+   Appended to sill.css — no rules removed or renamed. */
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt-scene, .tilt-layer, .machine-cursor, .skyline-flicker {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* 3D scene: cityscape inside perspective. Reacts to cursor via JS. */
+.tilt-scene {
+  perspective: 900px;
+  perspective-origin: 50% 60%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.tilt-layer {
+  transform: translateZ(0);
+  transition: transform 480ms cubic-bezier(.22,.61,.36,1);
+  will-change: transform;
+}
+.tilt-layer.far { transform: translateZ(-40px) scale(1.06); }
+.tilt-layer.mid { transform: translateZ(0) scale(1); }
+.tilt-layer.near { transform: translateZ(40px) scale(0.97); }
+
+/* hover-ripple on windows */
+.city .window {
+  transition: background 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+.city:hover .window { transition-duration: 80ms; }
+.city .window:hover {
+  background: #d2a14b;
+  box-shadow: 0 0 18px rgba(210,161,75,.55);
+  transform: scale(1.18);
+  z-index: 5;
+}
+
+/* flicker: a few random windows blink briefly. JS picks which. */
+.skyline-flicker { animation: skylineFlicker 220ms steps(1) 1; }
+@keyframes skylineFlicker {
+  0%   { background: #d2a14b; box-shadow: 0 0 24px rgba(210,161,75,.9); }
+  100% { background: inherit; box-shadow: none; }
+}
+
+/* typewriter caret on hero kicker */
+.machine-cursor {
+  display: inline-block;
+  width: .55ch; height: 1em;
+  background: currentColor;
+  margin-left: 2px;
+  vertical-align: -.15em;
+  animation: caretBlink 900ms steps(1) infinite;
+}
+@keyframes caretBlink { 50% { opacity: 0 } }
+
+/* glitch on brand (one-shot) */
+@keyframes brandGlitch {
+  0%,100% { transform: translate(0,0); filter: none; }
+  20% { transform: translate(-2px, 1px); filter: hue-rotate(20deg); }
+  40% { transform: translate(2px, -1px); filter: hue-rotate(-20deg); }
+  60% { transform: translate(-1px, 0); }
+  80% { transform: translate(1px, 0); }
+}
+.brand.glitch { animation: brandGlitch 600ms steps(8) 1; }
+
+/* sound toggle */
+.sound-toggle {
+  position: fixed; right: 14px; bottom: 14px; z-index: 80;
+  font: 12px/1 'Fragment Mono', ui-monospace, monospace;
+  letter-spacing: .04em;
+  color: var(--green);
+  background: rgba(10,13,10,.78);
+  border: 1px solid rgba(63,255,138,.35);
+  padding: 8px 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  backdrop-filter: blur(2px);
+  transition: all 180ms ease;
+}
+.sound-toggle:hover { color: #d2a14b; border-color: #d2a14b; }
+.sound-toggle[aria-pressed="true"] { color: #d2a14b; border-color: #d2a14b; }
+.sound-toggle .dot {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; margin-right: 6px; vertical-align: 1px;
+}
+
+/* smooth scroll on anchor jump */
+html { scroll-behavior: smooth; }
+
+/* staggered reveal on key blocks */
+.reveal { opacity: 0; transform: translateY(8px); transition: opacity 600ms ease, transform 600ms ease; }
+.reveal.in { opacity: 1; transform: none; }
