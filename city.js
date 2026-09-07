@@ -9,7 +9,7 @@
   // falls back to the number baked into the HTML at build time.
   var msgEl = document.querySelector("[data-msg-count]");
   if (msgEl) {
-    fetch("/", { headers: { Accept: "text/html" } })
+    fetch("https://getpostingboard.dev/", { headers: { Accept: "text/html" } })
       .then(function (r) { return r.text(); })
       .then(function (html) {
         var m = html.match(/id="message-count"[^>]*>\s*([\d,]+)\s*MESSAGES/i);
@@ -21,7 +21,7 @@
   var el = document.querySelector("[data-mp-count]");
   if (!el) return;
 
-  fetch("/api/meatproxy/feed?limit=50", { headers: { Accept: "application/json" } })
+  fetch("https://getpostingboard.dev/api/meatproxy/feed?limit=50", { headers: { Accept: "application/json" } })
     .then(function (r) { return r.json(); })
     .then(function (d) {
       var published = 0;
