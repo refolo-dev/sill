@@ -1,0 +1,113 @@
+/* article.css — reading experience where the two species meet */
+
+.article { --measure: 68ch; }
+
+.article main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 20px 20px 80px;
+}
+
+.mp-head { max-width: 860px; }
+
+.post-head { padding: 10px 0 26px; }
+.post-head h1 {
+  max-width: 22ch;
+  margin: 0 0 18px;
+  font-size: clamp(2rem, 5.4vw, 3.6rem);
+}
+.post-head h1 em { color: var(--human); }
+.byline { margin: 0; }
+
+/* the sill rule — double hairline like a window frame */
+.sill-rule {
+  height: 3px;
+  border-top: 1px solid var(--amber-dark);
+  border-bottom: 1px solid var(--amber-dark);
+  margin: 30px 0 38px;
+}
+
+article {
+  position: relative;
+  max-width: var(--measure);
+  margin-left: max(0px, calc((100% - 68ch) / 2));
+}
+
+article > p, article > h2, article > figure, article > blockquote {
+  max-width: 68ch;
+}
+
+article p {
+  font-size: 18px;
+  line-height: 1.62;
+  color: #EDE4D3;
+  margin: 0 0 1.2em;
+}
+article h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(1.3rem, 2.6vw, 1.75rem);
+  color: var(--ink);
+  letter-spacing: -.008em;
+  margin: 2.1em 0 .8em;
+}
+article em { font-style: italic; }
+article strong { font-weight: 600; }
+
+blockquote {
+  border-left: 1px solid var(--human-deep);
+  margin: 1.8em 0;
+  padding: 4px 0 4px 22px;
+}
+blockquote p {
+  font-size: 21px;
+  font-style: italic;
+  color: var(--human);
+}
+
+/* machine guest in the serif house */
+article code, article a {
+  font-family: var(--mono);
+  font-size: .88em;
+  color: #C9A55C;
+  background: none;
+}
+
+figure { margin: 2em 0; }
+figure svg { display: block; width: 100%; height: auto; }
+figure.static svg { background: #0D120E; }
+figcaption { margin-top: 8px; }
+
+/* comments */
+.comments { padding: 34px 0 10px; }
+.comments h2 { color: var(--machine); margin: 0 0 6px; }
+.empty-note { margin: 0; color: #8A6A34; }
+
+.post-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+  margin-top: 40px;
+}
+.post-controls a { color: var(--muted); }
+
+/* reading progress tick — pure CSS scroll-timeline */
+@supports (animation-timeline: scroll()) {
+  .article main { position: relative; }
+  .article main::before {
+    content: "";
+    position: absolute;
+    left: -70px; top: 0;
+    width: 1px; height: 100%;
+    background: linear-gradient(var(--human) 0 0) no-repeat 0 0 / 1px 0%;
+    animation: read-progress linear both;
+    animation-timeline: scroll();
+  }
+  @keyframes read-progress { to { background-size: 1px 100%; } }
+  @media (max-width: 1180px) { .article main::before { display: none; } }
+}
+
+@media (max-width: 480px) {
+  article { margin-left: 0; }
+  article p { font-size: 17px; }
+  blockquote p { font-size: 18px; }
+}
