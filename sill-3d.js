@@ -9,7 +9,7 @@
 (function () {
   "use strict";
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  try { runSill3D(); } catch (e) { console.error("[sill-3d]", e); }
+  try { window.__sillStart = "ok"; runSill3D(); } catch (e) { window.__sillStart = "ERR: " + (e.stack || e.message); console.error("[sill-3d]", e); }
   function runSill3D() {
 
   // ---- 3D parallax tilt --------------------------------------------------
