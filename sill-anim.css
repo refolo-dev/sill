@@ -1,8 +1,6 @@
-/* THE SILL — motion layer v5 (night city).
-   Runs on ALL devices, including prefers-reduced-motion clients — the
-   build-up IS the product (owner decision). Cheap: opacity/transform/filter. */
+/* THE SILL — motion & interaction layer v6 (agent city) */
 
-/* --- intro build-up: windows rise out of the dark, wave left->right --- */
+/* --- intro build-up --- */
 .city .cityscape { display: block; width: 100%; height: 100%; }
 .city .cityscape rect { transform-box: fill-box; transform-origin: 50% 100%; transition: filter 160ms ease; }
 .city .cityscape rect.rise { animation: windowRise 1100ms cubic-bezier(.22,.61,.36,1) both; }
@@ -12,7 +10,7 @@
   100% { opacity: 1; transform: translateY(0) scaleY(1); }
 }
 
-/* --- ambient sway: the city breathes with no pointer needed --- */
+/* --- ambient motion --- */
 @keyframes cityDrift {
   0%   { transform: translate(0, 0); }
   25%  { transform: translate(-9px, -2px); }
@@ -21,26 +19,34 @@
   100% { transform: translate(0, 0); }
 }
 .city .cityscape { animation: cityDrift 13s ease-in-out infinite; }
-
-/* --- horizon breathing light --- */
 @keyframes horizonBreathe { 0%, 100% { opacity: .8; } 50% { opacity: 1; } }
 .city-horizon { animation: horizonBreathe 8s ease-in-out infinite; }
-
-/* --- dot layers: pulse (breathe comes from sill.css) --- */
 @keyframes layerGlow { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.4); } }
 .city-layer { animation: breathe 7s ease-in-out infinite alternate, layerGlow 9s ease-in-out infinite; }
-
-/* --- window flicker (JS tags random rects) --- */
 .skyline-flicker { animation: winFlash 320ms ease-out 1; }
 @keyframes winFlash {
-  0%   { filter: brightness(2.8) drop-shadow(0 0 10px rgba(255,190,90,.95)); }
+  0% { filter: brightness(2.8) drop-shadow(0 0 10px rgba(255,190,90,.95)); }
   100% { filter: none; }
 }
-
-/* --- window hover (inline SVG = real DOM) --- */
 .city .cityscape rect:hover { filter: brightness(1.9) drop-shadow(0 0 6px rgba(255,184,77,.85)); cursor: crosshair; }
 
-/* --- scanline sweep: a light band travels down the glass --- */
+/* --- data motes: agent packets rising through the city --- */
+.mote {
+  position: absolute; z-index: 3; pointer-events: none;
+  width: 3px; height: 3px; border-radius: 50%;
+  background: #4DD6E8; box-shadow: 0 0 8px 1px rgba(77,214,232,.8);
+  animation: moteRise linear infinite;
+}
+.mote.amber { background: #FFB84D; box-shadow: 0 0 8px 1px rgba(255,184,77,.8); }
+@keyframes moteRise {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  8%   { opacity: var(--mo, .5); }
+  50%  { transform: translateY(-30vh) translateX(24px); }
+  92%  { opacity: var(--mo, .5); }
+  100% { transform: translateY(-60vh) translateX(-14px); opacity: 0; }
+}
+
+/* --- scanline sweep --- */
 .scanlines { overflow: hidden; }
 .scanlines::after {
   content: ""; position: absolute; left: 0; right: 0; top: 0; height: 24%;
@@ -48,6 +54,67 @@
   animation: scanSweep 9s linear infinite;
 }
 @keyframes scanSweep { 0% { transform: translateY(-30%); } 100% { transform: translateY(430%); } }
+
+/* --- SIGNAL eggs (infinite hunt) --- */
+.signal-egg {
+  position: absolute; z-index: 90;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: transparent; border: none; padding: 0; cursor: pointer;
+  box-shadow: 0 0 10px 2px rgba(77,214,232,.55), inset 0 0 4px rgba(77,214,232,.9);
+  background: radial-gradient(circle, rgba(255,255,255,.95) 0 2px, rgba(77,214,232,.85) 3px, transparent 60%);
+  animation: eggPulse 2.2s ease-in-out infinite;
+  transition: transform 200ms ease;
+}
+.signal-egg:hover { transform: scale(1.5); }
+.signal-egg.found { animation: eggFound 600ms ease-out both; }
+@keyframes eggPulse {
+  0%, 100% { box-shadow: 0 0 8px 1px rgba(77,214,232,.35); }
+  50%      { box-shadow: 0 0 16px 4px rgba(77,214,232,.75); }
+}
+@keyframes eggFound {
+  0%   { transform: scale(1); filter: brightness(1); }
+  40%  { transform: scale(2.2); filter: brightness(3); }
+  100% { transform: scale(0); filter: brightness(6); opacity: 0; }
+}
+.egg-count {
+  position: fixed; left: 14px; bottom: 14px; z-index: 80;
+  font: 12px/1 'Fragment Mono', ui-monospace, monospace;
+  color: #4DD6E8; letter-spacing: .06em;
+  background: rgba(10,15,30,.82); border: 1px solid rgba(77,214,232,.35);
+  border-radius: 4px; padding: 8px 10px;
+  pointer-events: none;
+}
+.egg-toast {
+  position: fixed; left: 50%; top: 16%; z-index: 100;
+  transform: translate(-50%, -8px);
+  max-width: min(420px, 88vw);
+  background: rgba(8,13,28,.94);
+  border: 1px solid rgba(77,214,232,.5);
+  border-radius: 6px; padding: 12px 16px;
+  font: 12px/1.5 'Fragment Mono', ui-monospace, monospace;
+  color: #C2E8F4;
+  box-shadow: 0 6px 40px rgba(77,214,232,.25);
+  opacity: 0; transition: opacity .3s ease, transform .3s ease;
+  pointer-events: none;
+}
+.egg-toast b { display: block; color: #4DD6E8; letter-spacing: .08em; margin-bottom: 4px; text-transform: uppercase; }
+.egg-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* --- wake hint (autoplay policy) --- */
+.wake-hint {
+  position: fixed; left: 50%; bottom: 64px; z-index: 95;
+  transform: translateX(-50%);
+  font: 12px/1 'Fragment Mono', ui-monospace, monospace;
+  color: #FFB84D; letter-spacing: .06em; text-transform: uppercase;
+  background: rgba(10,15,30,.88); border: 1px solid rgba(255,184,77,.45);
+  border-radius: 4px; padding: 10px 14px;
+  animation: hintPulse 2s ease-in-out infinite;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+.wake-hint.fade { opacity: 0; }
+.wake-hint .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #FFB84D; margin-right: 7px; vertical-align: 1px; animation: dotPulse 1.6s ease-in-out infinite; }
+@keyframes hintPulse { 0%, 100% { box-shadow: 0 0 0 rgba(255,184,77,0); } 50% { box-shadow: 0 0 18px rgba(255,184,77,.4); } }
 
 /* --- typewriter caret --- */
 .machine-cursor {
@@ -79,10 +146,7 @@
   transition: border-color 180ms ease, box-shadow 180ms ease;
 }
 .sound-toggle:hover, .sound-toggle[aria-pressed="true"] { border-color: #FFB84D; box-shadow: 0 0 16px rgba(255,184,77,.28); }
-.sound-toggle .dot {
-  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-  background: currentColor; margin-right: 6px; vertical-align: 1px;
-}
+.sound-toggle .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 6px; vertical-align: 1px; }
 .sound-toggle[aria-pressed="true"] .dot { animation: dotPulse 1.6s ease-in-out infinite; }
 @keyframes dotPulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
 
