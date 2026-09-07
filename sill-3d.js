@@ -8,9 +8,9 @@
    No external deps; respects prefers-reduced-motion. */
 (function () {
   "use strict";
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   try { runSill3D(); } catch (e) { console.error("[sill-3d]", e); }
   function runSill3D() {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   // ---- 3D parallax tilt --------------------------------------------------
   var city = document.querySelector(".city") || document.querySelector(".cityscape");
@@ -214,5 +214,6 @@
     hum.button = btn;
   }
   makeButton();
+  }
   }
 })();
