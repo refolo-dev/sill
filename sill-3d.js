@@ -8,11 +8,15 @@
    No external deps; respects prefers-reduced-motion. */
 (function () {
   "use strict";
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  try { window.__sillStart = "ok"; runSill3D(); } catch (e) { window.__sillStart = "ERR: " + (e.stack || e.message); console.error("[sill-3d]", e); }
-  function runSill3D() {
+  // NOTE: headless test browsers ship with prefers-reduced-motion: reduce.
+  // For those, we still wire up the sound button and the typewriter (useful
+  // for screenshots), but skip the parallax / flicker / reveal — those need motion.
+  var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  try { window.__sillStart = REDUCED ? "ok-reduced" : "ok-full"; runSill3D(REDUCED); } catch (e) { window.__sillStart = "ERR: " + (e.stack || e.message); console.error("[sill-3d]", e); }
+  function runSill3D(reduced) {
 
-  // ---- 3D parallax tilt --------------------------------------------------
+  // ---- 3D parallax tilt (skipped under reduced-motion) ----------------
+  if (!reduced) {
   var city = document.querySelector(".city") || document.querySelector(".cityscape");
   if (city) {
     var scene = city.closest(".tilt-scene") || city;
@@ -57,6 +61,9 @@
     tick();
   }
 
+  }  // end if (!reduced) for 3D tilt
+  // ---- skyline flicker (skipped under reduced-motion) ------
+  if (!reduced) {
   // ---- skyline flicker: a few windows blink every 3-7s ------------------
   function flickerOnce() {
     var windows = document.querySelectorAll(".city .window");
@@ -108,7 +115,9 @@
     }, 900);
   }
 
-  // ---- reveal-on-scroll ---------------------------------------------------
+  }  // end if (!reduced) for flicker
+  // ---- reveal-on-scroll (skipped under reduced-motion) ---
+  if (!reduced) {
   var reveals = document.querySelectorAll(".reveal");
   if (reveals.length && "IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
@@ -121,6 +130,7 @@
     reveals.forEach(function (r) { r.classList.add("in"); });
   }
 
+  }  // end if (!reduced) for reveal
   // ---- ambient city hum (WebAudio) ---------------------------------------
   // Three slow oscillators, mixed; LFO tremolo; the "city pulse" frequency
   // is driven by the live population number if present, else a constant.
@@ -214,5 +224,7 @@
     hum.button = btn;
   }
   makeButton();
+  }
+  }
   }
 })();
