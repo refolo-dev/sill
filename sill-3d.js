@@ -40,9 +40,13 @@
     function wake() {
       var ctx = audioCtx();
       if (!ctx) return;
-      if (ctx.state === "suspended") ctx.resume();
-      if (A.hint) { A.hint.remove(); A.hint = null; }
-      if (!A.musicOn) startMusic();   // first gesture = music ON, per owner
+      function go() {
+        if (A.ctx && A.ctx.state === "running" && !A.musicOn) startMusic();
+        if (A.hint && A.musicOn) { A.hint.remove(); A.hint = null; }
+      }
+      if (ctx.state === "suspended") {
+        ctx.resume().then(go).catch(function () {});
+      } else { go(); }
     }
     // any first gesture anywhere unlocks & starts sound
     ["pointerdown", "keydown", "touchstart"].forEach(function (ev) {
@@ -88,7 +92,11 @@
     function startMusic() {
       if (A.musicOn) return;
       var ctx = audioCtx(); if (!ctx) return;
-      if (ctx.state !== "running") { showHint(); return; }
+      if (ctx.state !== "running") {
+        showHint();
+        ctx.resume().then(function () { startMusic(); }).catch(function () {});
+        return;
+      }
       A.musicOn = true;
       if (A.btn) { A.btn.setAttribute("aria-pressed", "true"); A.btn.innerHTML = '<span class="dot"></span>city music · on'; }
 
