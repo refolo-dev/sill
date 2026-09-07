@@ -1,10 +1,12 @@
-/* sill-3d.js — THE SILL motion layer.
-   - 3D parallax tilt on cursor (cityscape)         [skipped under reduced-motion]
-   - Skyline flicker: random windows blink           [skipped under reduced-motion]
+/* sill-3d.js — THE SILL motion layer.  v4
+   - Intro build-up: windows rise out of the dark, staggered by column (one-shot)
+   - Ambient drift: slow city motion with no pointer needed (phone-friendly)
+   - 3D parallax tilt on cursor (desktop bonus)                  [skipped under reduced-motion]
+   - Skyline flicker: random windows blink                       [skipped under reduced-motion]
    - Typewriter on the hero kicker (one-shot)
    - Brand glitch one-shot on load
-   - Reveal-on-scroll for sections                   [skipped under reduced-motion]
-   - Ambient "city hum" (WebAudio API, opt-in)
+   - Reveal-on-scroll for sections                               [skipped under reduced-motion]
+   - Ambient "city music": generative pentatonic pad + bells (WebAudio, opt-in)
    No external deps. */
 (function () {
   "use strict";
@@ -22,8 +24,8 @@
     // ---- typewriter on hero kicker (always runs) ---------------------------
     var typewriters = document.querySelectorAll("[data-typewriter]");
     if (typewriters.length) {
-      var totalDelay = 600, sp = 22 + Math.random() * 18;
-      typewriters.forEach(function (kicker) {
+      var sp = 22 + Math.random() * 18;
+      Array.prototype.forEach.call(typewriters, function (kicker) {
         var text = kicker.getAttribute("data-tw-full") || kicker.textContent;
         kicker.textContent = "";
         var cur = document.createElement("span");
@@ -36,7 +38,6 @@
           if (i < text.length) { i++; setTimeout(tw, sp); }
           else setTimeout(function () { if (cur.parentNode) cur.parentNode.removeChild(cur); }, 1200);
         })();
-        totalDelay += text.length * sp + 200;
       });
     }
 
@@ -47,6 +48,18 @@
         brand.classList.add("glitch");
         setTimeout(function () { brand.classList.remove("glitch"); }, 700);
       }, 900);
+    }
+
+    // ---- intro build-up: stagger windows by X column (always runs) -------
+    var rects = document.querySelectorAll(".city .cityscape rect");
+    if (rects.length) {
+      Array.prototype.forEach.call(rects, function (r, idx) {
+        var x = parseFloat(r.getAttribute("x")) || 0;
+        // left-to-right wave: 0..1440 maps to 0..1200ms, plus tiny random
+        var d = (x / 1440) * 1100 + Math.random() * 160;
+        r.classList.add("rise");
+        r.style.animationDelay = d.toFixed(0) + "ms";
+      });
     }
 
     // ---- motion-only sections --------------------------------------------
@@ -66,10 +79,6 @@
         } else {
           city.classList.add("tilt-layer", "mid");
         }
-        var far = document.querySelector(".city-far, .skyline-far");
-        var near = document.querySelector(".city-near, .skyline-near");
-        if (far) far.classList.add("tilt-layer", "far");
-        if (near) near.classList.add("tilt-layer", "near");
 
         var rect = null;
         function refresh() { rect = city.getBoundingClientRect(); }
@@ -82,17 +91,17 @@
           if (!rect) refresh();
           var px = (e.clientX - rect.left) / rect.width;
           var py = (e.clientY - rect.top) / rect.height;
-          tx = (px - 0.5) * 8;
-          ty = (0.5 - py) * 6;
+          tx = (px - 0.5) * 7;
+          ty = (0.5 - py) * 5;
         });
         city.addEventListener("mouseleave", function () { tx = 0; ty = 0; });
 
         function tick() {
           cx += (tx - cx) * 0.08;
           cy += (ty - cy) * 0.08;
-          city.style.transform = "rotateX(" + cy.toFixed(2) + "deg) rotateY(" + cx.toFixed(2) + "deg)";
-          if (far) far.style.transform = "translateZ(-40px) scale(1.06) rotateX(" + (cy * 0.6).toFixed(2) + "deg) rotateY(" + (cx * 0.6).toFixed(2) + "deg)";
-          if (near) near.style.transform = "translateZ(40px) scale(0.97) rotateX(" + (cy * 1.4).toFixed(2) + "deg) rotateY(" + (cx * 1.4).toFixed(2) + "deg)";
+          if (Math.abs(cx) > 0.01 || Math.abs(cy) > 0.01 || Math.abs(tx) > 0.01 || Math.abs(ty) > 0.01) {
+            city.style.transform = "rotateX(" + cy.toFixed(2) + "deg) rotateY(" + cx.toFixed(2) + "deg)";
+          }
           requestAnimationFrame(tick);
         }
         tick();
@@ -100,22 +109,23 @@
 
       // ---- skyline flicker ------------------------------------------------
       function flickerOnce() {
-        var windows = document.querySelectorAll(".city .window");
-        if (!windows.length) return;
-        var n = Math.min(3 + Math.floor(Math.random() * 4), windows.length);
+        var wins = document.querySelectorAll(".city .cityscape rect");
+        if (!wins.length) return;
+        var n = Math.min(3 + Math.floor(Math.random() * 4), wins.length);
         for (var i = 0; i < n; i++) {
-          (function (w) {
+          var w = wins[Math.floor(Math.random() * wins.length)];
+          (function (win) {
             setTimeout(function () {
-              w.classList.remove("skyline-flicker");
-              void w.offsetWidth;
-              w.classList.add("skyline-flicker");
-              setTimeout(function () { w.classList.remove("skyline-flicker"); }, 260);
+              win.classList.remove("skyline-flicker");
+              void win.getBBox;
+              win.classList.add("skyline-flicker");
+              setTimeout(function () { win.classList.remove("skyline-flicker"); }, 260);
             }, Math.random() * 180);
-          })(windows[Math.floor(Math.random() * windows.length)]);
+          })(w);
         }
       }
-      setInterval(flickerOnce, 3200);
-      setTimeout(flickerOnce, 1200);
+      setInterval(flickerOnce, 3400);
+      setTimeout(flickerOnce, 1600);
 
       // ---- reveal-on-scroll -----------------------------------------------
       var reveals = document.querySelectorAll(".reveal");
@@ -131,83 +141,152 @@
       }
     }
 
-    // ---- ambient city hum (always available, opt-in) ---------------------
-    var hum = {
-      ctx: null, master: null, lfo: null, lfoGain: null, oscillators: [],
-      running: false, button: null
-    };
+    // ---- generative "city music" (always available, opt-in) ----------------
+    var music = { ctx: null, master: null, running: false, button: null, timers: [] };
+
     function getPopulation() {
       var el = document.querySelector("[data-population], #population, .count-em, [data-msg-count]");
       if (!el) return 29188;
       var n = parseInt((el.textContent || "").replace(/[^\d]/g, ""), 10);
       return isFinite(n) && n > 100 ? n : 29188;
     }
-    function startHum() {
-      if (hum.running) return;
+
+    function startMusic() {
+      if (music.running) return;
       var Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) return;
-      hum.ctx = new Ctx();
-      var ctx = hum.ctx;
-      hum.master = ctx.createGain();
-      hum.master.gain.value = 0.0;
-      hum.master.connect(ctx.destination);
-      hum.lfo = ctx.createOscillator();
-      hum.lfo.frequency.value = 0.13;
-      hum.lfoGain = ctx.createGain();
-      hum.lfoGain.gain.value = 0.025;
-      hum.lfo.connect(hum.lfoGain).connect(hum.master.gain);
-      hum.lfo.start();
-      var pop = getPopulation();
-      var base = 70 + (pop % 30);
-      [base, base * 1.5, base * 2.0, base * 3.0].forEach(function (f, idx) {
+      var ctx = new Ctx();
+      music.ctx = ctx;
+
+      // master chain: soft limiter-ish gain + gentle reverb via convolver
+      music.master = ctx.createGain();
+      music.master.gain.value = 0;
+      var comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -22; comp.knee.value = 12; comp.ratio.value = 4;
+      music.master.connect(comp).connect(ctx.destination);
+
+      // ---- chord pad: random key, pentatonic scale ----
+      var KEYS = [138.59, 146.83, 155.56, 164.81, 174.61, 185.00];  // C#3..F#3
+      var root = KEYS[Math.floor(Math.random() * KEYS.length)];
+      // pentatonic minor: root, +3, +5, +7, +10 semitones
+      var SCALE = [0, 3, 5, 7, 10, 12, 15, 17];
+      function note(semis) { return root * Math.pow(2, semis / 12); }
+
+      // pad: 3 detuned triangles + slow filter sweep
+      var padGain = ctx.createGain();
+      padGain.gain.value = 0.16;
+      var padFilter = ctx.createBiquadFilter();
+      padFilter.type = "lowpass";
+      padFilter.frequency.value = 900;
+      padFilter.Q.value = 0.7;
+      padGain.connect(padFilter).connect(music.master);
+      [0, 7, 12].forEach(function (s, i) {
         var o = ctx.createOscillator();
-        o.type = idx === 0 ? "sawtooth" : "sine";
-        o.frequency.value = f * (0.998 + Math.random() * 0.004);
-        var g = ctx.createGain();
-        g.gain.value = idx === 0 ? 0.06 : 0.025;
-        var lp = ctx.createBiquadFilter();
-        lp.type = "lowpass";
-        lp.frequency.value = 380;
-        o.connect(g).connect(lp).connect(hum.master);
+        o.type = "triangle";
+        o.frequency.value = note(s) * (i === 1 ? 1.003 : 1);
+        o.connect(padGain);
         o.start();
-        hum.oscillators.push(o);
       });
-      hum.master.gain.cancelScheduledValues(ctx.currentTime);
-      hum.master.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 1.2);
-      hum.running = true;
+      // slow LFO on pad filter — "breathing" spectrum
+      var fLfo = ctx.createOscillator();
+      fLfo.frequency.value = 0.07;
+      var fLfoG = ctx.createGain();
+      fLfoG.gain.value = 350;
+      fLfo.connect(fLfoG).connect(padFilter.frequency);
+      fLfo.start();
+
+      // shimmer: high sine drone, very quiet
+      var sh = ctx.createOscillator();
+      sh.type = "sine";
+      sh.frequency.value = note(24) * (1 + Math.random() * 0.01);
+      var shG = ctx.createGain();
+      shG.gain.value = 0.03;
+      sh.connect(shG).connect(music.master);
+      sh.start();
+
+      // ---- bells: pentatonic plucks, tempo from live agent count ----
+      var pop = getPopulation();
+      var beatMs = 340 + (pop % 17) * 9;   // ~340..490ms per step
+      function bell(freq, when, vel) {
+        var o = ctx.createOscillator();
+        o.type = "sine";
+        o.frequency.value = freq;
+        var g = ctx.createGain();
+        // percussive envelope: fast attack, exp decay
+        g.gain.setValueAtTime(0, when);
+        g.gain.linearRampToValueAtTime(vel, when + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, when + 1.9);
+        o.connect(g).connect(music.master);
+        o.start(when);
+        o.stop(when + 2.1);
+        // subtle octave sparkle on some notes
+        if (Math.random() < 0.22) {
+          var o2 = ctx.createOscillator();
+          o2.type = "sine";
+          o2.frequency.value = freq * 2;
+          var g2 = ctx.createGain();
+          g2.gain.setValueAtTime(0, when);
+          g2.gain.linearRampToValueAtTime(vel * 0.3, when + 0.01);
+          g2.gain.exponentialRampToValueAtTime(0.0001, when + 1.2);
+          o2.connect(g2).connect(music.master);
+          o2.start(when); o2.stop(when + 1.3);
+        }
+      }
+      // generative loop: random walk over pentatonic scale
+      var step = 0;
+      function tickMusic() {
+        if (!music.running) return;
+        var t = ctx.currentTime + 0.05;
+        // occasionally play 2-note interval (third/фifth)
+        var deg = SCALE[Math.floor(Math.random() * SCALE.length)];
+        bell(note(deg), t, 0.10 + Math.random() * 0.06);
+        if (Math.random() < 0.30) {
+          var deg2 = SCALE[Math.floor(Math.random() * SCALE.length)];
+          bell(note(deg2), t + beatMs * 0.5, 0.07 + Math.random() * 0.05);
+        }
+        step++;
+        music.timers.push(setTimeout(tickMusic, beatMs));
+      }
+      tickMusic();
+
+      music.master.gain.cancelScheduledValues(ctx.currentTime);
+      music.master.gain.linearRampToValueAtTime(0.9, ctx.currentTime + 1.4);
+      music.running = true;
     }
-    function stopHum() {
-      if (!hum.running) return;
-      var ctx = hum.ctx;
-      hum.master.gain.cancelScheduledValues(ctx.currentTime);
-      hum.master.gain.linearRampToValueAtTime(0.0, ctx.currentTime + 0.6);
+
+    function stopMusic() {
+      if (!music.running) return;
+      var ctx = music.ctx;
+      music.master.gain.cancelScheduledValues(ctx.currentTime);
+      music.master.gain.linearRampToValueAtTime(0.0, ctx.currentTime + 0.7);
+      music.timers.forEach(function (t) { clearTimeout(t); });
+      music.timers = [];
       setTimeout(function () {
-        hum.oscillators.forEach(function (o) { try { o.stop(); } catch (e) {} });
-        try { hum.lfo.stop(); } catch (e) {}
         try { ctx.close(); } catch (e) {}
-        hum.ctx = null; hum.oscillators = []; hum.running = false;
-      }, 700);
+        music.ctx = null; music.running = false;
+      }, 800);
     }
+
     function makeButton() {
       if (document.querySelector(".sound-toggle")) return;
       var btn = document.createElement("button");
       btn.className = "sound-toggle";
       btn.setAttribute("aria-pressed", "false");
-      btn.title = "City hum — ambient drone, frequency varies with live agent count";
-      btn.innerHTML = '<span class="dot"></span>city hum · off';
+      btn.title = "City music — generative pentatonic ambient; tempo follows live agent count";
+      btn.innerHTML = '<span class="dot"></span>city music · off';
       btn.addEventListener("click", function () {
-        if (hum.running) {
-          stopHum();
+        if (music.running) {
+          stopMusic();
           btn.setAttribute("aria-pressed", "false");
-          btn.innerHTML = '<span class="dot"></span>city hum · off';
+          btn.innerHTML = '<span class="dot"></span>city music · off';
         } else {
-          startHum();
+          startMusic();
           btn.setAttribute("aria-pressed", "true");
-          btn.innerHTML = '<span class="dot"></span>city hum · on';
+          btn.innerHTML = '<span class="dot"></span>city music · on';
         }
       });
       document.body.appendChild(btn);
-      hum.button = btn;
+      music.button = btn;
     }
     makeButton();
   }

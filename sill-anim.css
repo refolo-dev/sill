@@ -30,7 +30,7 @@
 }
 .city:hover .window { transition-duration: 80ms; }
 .city .window:hover {
-  background: #d2a14b;
+  background: #FFB84D;
   box-shadow: 0 0 18px rgba(210,161,75,.55);
   transform: scale(1.18);
   z-index: 5;
@@ -39,7 +39,7 @@
 /* flicker: a few random windows blink briefly. JS picks which. */
 .skyline-flicker { animation: skylineFlicker 220ms steps(1) 1; }
 @keyframes skylineFlicker {
-  0%   { background: #d2a14b; box-shadow: 0 0 24px rgba(210,161,75,.9); }
+  0%   { background: #FFB84D; box-shadow: 0 0 24px rgba(210,161,75,.9); }
   100% { background: inherit; box-shadow: none; }
 }
 
@@ -78,8 +78,8 @@
   backdrop-filter: blur(2px);
   transition: all 180ms ease;
 }
-.sound-toggle:hover { color: #d2a14b; border-color: #d2a14b; }
-.sound-toggle[aria-pressed="true"] { color: #d2a14b; border-color: #d2a14b; }
+.sound-toggle:hover { color: #FFB84D; border-color: #FFB84D; }
+.sound-toggle[aria-pressed="true"] { color: #FFB84D; border-color: #FFB84D; }
 .sound-toggle .dot {
   display: inline-block; width: 6px; height: 6px; border-radius: 50%;
   background: currentColor; margin-right: 6px; vertical-align: 1px;
@@ -91,3 +91,48 @@ html { scroll-behavior: smooth; }
 /* staggered reveal on key blocks */
 .reveal { opacity: 0; transform: translateY(8px); transition: opacity 600ms ease, transform 600ms ease; }
 .reveal.in { opacity: 1; transform: none; }
+
+/* ==== v3: intro build + ambient motion (no cursor needed) ==== */
+/* windows grow out of the dark on first load, staggered by column */
+.city .cityscape rect { transform-box: fill-box; transform-origin: 50% 100%; }
+.city .cityscape { display: block; width: 100%; height: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .city .cityscape rect { animation: none !important; }
+  .city-layer { animation: none !important; }
+  .city-horizon { animation: none !important; }
+  .drift-dir { animation: none !important; }
+}
+
+/* slow ambient drift — city feels alive without any pointer */
+@keyframes cityDrift {
+  0%   { transform: translateX(0) translateY(0); }
+  50%  { transform: translateX(-14px) translateY(-3px); }
+  100% { transform: translateX(0) translateY(0); }
+}
+.city .cityscape { animation: cityDrift 26s ease-in-out infinite; }
+
+/* deep-breathing horizon light */
+@keyframes horizonBreathe {
+  0%, 100% { opacity: .85; }
+  50%      { opacity: 1; }
+}
+.city-horizon { animation: horizonBreathe 9s ease-in-out infinite; }
+
+/* layer dots pulse staggered (already breathe, add second slower one) */
+@keyframes layerGlow {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.35); }
+}
+.city-layer { animation: breathe 7s ease-in-out infinite alternate, layerGlow 11s ease-in-out infinite; }
+
+/* build-up intro: set via JS animation-delay per window */
+@keyframes windowRise {
+  0%   { opacity: 0; transform: translateY(26px) scaleY(.2); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) scaleY(1); }
+}
+.city .cityscape rect.rise { animation: windowRise 900ms cubic-bezier(.22,.61,.36,1) both; }
+
+/* gentle hover on individual windows (inline SVG — real DOM now) */
+.city .cityscape rect:hover { filter: brightness(1.9) drop-shadow(0 0 6px rgba(255,184,77,.8)); }
