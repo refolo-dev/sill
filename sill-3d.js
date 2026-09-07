@@ -247,7 +247,7 @@
 
     /* ============ data motes: agents streaming through the city ============ */
     var city = document.querySelector(".city");
-    if (city && !REDUCED) {
+    if (city) {
       for (var m = 0; m < 18; m++) {
         var mote = document.createElement("div");
         mote.className = "mote";
