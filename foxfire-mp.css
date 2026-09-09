@@ -3,12 +3,12 @@
 /* ---------- MP hero ---------- */
 .mp { max-width: 760px; margin: 0 auto; padding: 0 clamp(16px, 5vw, 40px) 96px; }
 .mp-hero { padding: clamp(48px, 8vh, 96px) 0 32px; position: relative; }
-.mp-title { font-family: 'Fraunces', Georgia, serif; font-variation-settings: 'opsz' 144, 'WONK' 1, 'SOFT' 50; font-weight: 700; font-size: clamp(36px, 6.4vw, 64px); line-height: 1.08; margin: 0 0 24px; }
+.mp-title { font-family: 'Fraunces', Georgia, serif; font-variation-settings: 'opsz' 144, 'WONK' 1, 'SOFT' 50; font-weight: 700; font-size: clamp(34px, 5.6vw, 56px); line-height: 1.1; margin: 0 0 32px; }
 .mp-intro { color: var(--quiet); font-size: 17px; max-width: 40em; }
 .mp-intro b { color: var(--moon); font-variant-numeric: tabular-nums; }
 
 /* ---------- Sort tabs ---------- */
-.mp-sort { display: flex; gap: 0; margin: 24px 0 40px; border-bottom: 1px solid #1E2A20; }
+.mp-sort { display: flex; gap: 0; margin: 32px 0 48px; border-bottom: 1px solid #1E2A20; }
 .mp-sort a { min-height: 48px; display: inline-flex; align-items: center; padding: 0 22px; margin-bottom: -1px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--quiet); text-decoration: none; border-bottom: 2px solid transparent; }
 .mp-sort a:hover { color: var(--tapetum); }
 .mp-sort a[aria-current="page"] { color: var(--tapetum); border-bottom-color: var(--tapetum); }
@@ -23,10 +23,10 @@
 .rating-gleam.r4 { opacity: 1; background: radial-gradient(circle, #FFE9B0 0%, var(--bitter) 55%, transparent 75%); filter: blur(1.2px); }
 .mp-meta-line { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--quiet); white-space: normal; line-height: 1.6; max-width: 96px; }
 .mp-main { flex: 1; min-width: 0; }
-.mp-main h2 { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: clamp(22px, 3vw, 30px); line-height: 1.18; margin: 0 0 10px; }
+.mp-main h2 { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: clamp(22px, 3vw, 30px); line-height: 1.18; margin: 0 0 12px; }
 .mp-main h2 a { color: var(--moon); text-decoration: none; box-shadow: inset 0 -2px 0 transparent; transition: box-shadow .2s ease; }
 .mp-main h2 a:hover, .mp-main h2 a:focus-visible { color: var(--core); box-shadow: inset 0 -2px 0 var(--tapetum); }
-.mp-meta { font-size: 14px; color: var(--quiet); margin: 0; }
+.mp-meta { font-size: 14px; color: var(--quiet); margin: 4px 0 0; }
 
 /* Title gleam underline — desktop hover/focus, instant on reduced-motion */
 @media (prefers-reduced-motion: no-preference) {
@@ -51,8 +51,9 @@
 .art { max-width: 760px; margin: 0 auto; padding: 0 clamp(16px, 5vw, 40px) 96px; }
 .art-hero { padding: clamp(48px, 8vh, 88px) 0 8px; }
 .art-kicker { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .28em; color: var(--quiet); margin: 0 0 18px; }
-.art-title { font-family: 'Fraunces', Georgia, serif; font-variation-settings: 'opsz' 144, 'WONK' 1, 'SOFT' 50; font-weight: 700; font-size: clamp(34px, 6vw, 60px); line-height: 1.1; margin: 0 0 18px; }
-.art-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 14px; color: var(--quiet); margin: 0 0 48px; }
+.art-title { font-family: 'Fraunces', Georgia, serif; font-variation-settings: 'opsz' 144, 'WONK' 1, 'SOFT' 50; font-weight: 700; font-size: clamp(34px, 6vw, 60px); line-height: 1.1; margin: 0 0 24px; }
+.art-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; font-size: 14.5px; color: var(--quiet); margin: 6px 0 48px; }
+.art-meta .rating-gleam { flex: 0 0 auto; }
 .art-meta .rating-gleam { display: inline-block; }
 .art-body { max-width: 38em; font-size: 20px; line-height: 1.65; color: var(--moon); }
 .art-body p { margin: 0 0 1.4em; }

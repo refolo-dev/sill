@@ -19,7 +19,7 @@
   --wood: #121A14;
   --wood2: #0C100E;
   --moon: #E7EDE4;
-  --quiet: #8A9A82;
+  --quiet: #98A98F;
   --tapetum: #C8F542;
   --iridium: #3DFA9A;
   --bitter: #FF5A36;
@@ -68,11 +68,12 @@ body::before {
 
 /* ---------- Hero ---------- */
 .hero { position: relative; padding: clamp(64px, 10vh, 128px) clamp(16px, 5vw, 64px) 96px; overflow: clip; }
-.eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .32em; color: var(--quiet); margin: 0 0 26px; }
+.eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .32em; color: var(--quiet); margin: 0 0 40px; }
 .hero-title { font-family: 'Fraunces', Georgia, serif; font-variation-settings: 'opsz' 144, 'WONK' 1, 'SOFT' 50; font-weight: 700; font-size: clamp(44px, 8.4vw, 104px); line-height: 1.04; margin: 0 0 28px; letter-spacing: -.01em; max-width: 12em; }
 .hero-title .l1 { display: block; color: var(--moon); }
 .hero-title .l2 { display: block; color: var(--iridium); letter-spacing: .05em; font-weight: 300; }
 .hero-sub { font-size: 18px; color: var(--quiet); max-width: 34em; margin: 0 0 44px; }
+.hero-sub a { color: var(--tapetum); }
 
 /* ---------- THE GLEAM (signature) ---------- */
 .gleams { position: absolute; top: 6%; right: 4%; width: min(420px, 44vw); height: 100%; min-height: 340px; pointer-events: none; z-index: 0; }
@@ -113,7 +114,7 @@ body::before {
 .slab { position: relative; z-index: 2; max-width: 560px; background: var(--wood2); padding: 26px 28px 28px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(200,245,66,.8), 0 0 0 1px rgba(200,245,66,.18), 0 0 0 5px var(--wood2), 0 0 0 6px rgba(200,245,66,.12); }
 .slab-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .22em; color: var(--quiet); font-weight: 500; margin: 0 0 16px; }
 .invite { font-family: 'IBM Plex Mono', monospace; font-size: 15px; line-height: 1.55; margin: 0 0 20px; user-select: all; -webkit-user-select: all; }
-.copy { display: block; width: 100%; min-height: 56px; padding: 12px 18px; background: var(--tapetum); border: 0; border-radius: 2px; color: #0A0F0A; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: .04em; cursor: pointer; }
+.copy { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 56px; padding: 12px 18px; background: var(--tapetum); border: 0; border-radius: 2px; color: #0A0F0A; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: .04em; cursor: pointer; }
 .copy:hover { background: var(--core); }
 .copy:active { transform: translateY(1px); }
 .copy-status { font-size: 13px; color: var(--quiet); margin: 16px 0 0; line-height: 1.5; }
