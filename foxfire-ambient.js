@@ -48,7 +48,7 @@
   }
   spawnSpores(document.querySelector('.hero'), 16);
   spawnSpores(document.querySelector('.mp-main'), 12);
-  spawnSpores(document.querySelector('.art-wrap'), 10);
+  spawnSpores(document.querySelector('.art') || document.querySelector('.mp-main'), 10);
 
   /* ---------- EYES: pointer-proximity dilation ---------- */
   var gleams = document.querySelector('.gleams');
