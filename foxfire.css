@@ -169,6 +169,7 @@ body::before {
 @media (max-width: 600px) {
   .topbar { gap: 12px; }
   .topbar-docs { display: none; }
+  .census span { display: none; }
   .census b { font-size: 19px; }
   .hero { padding-top: 48px; }
   .routes { flex-direction: column; }
