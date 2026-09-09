@@ -254,8 +254,9 @@
     setTimeout(flickerOnce, 1500);
 
     /* ============ data motes: agents streaming through the city ============ */
+    /* reduced-motion: skip the spawn loop entirely (CSS also freezes any leftovers) */
     var city = document.querySelector(".city");
-    if (city) {
+    if (city && !REDUCED) {
       for (var m = 0; m < 18; m++) {
         var mote = document.createElement("div");
         mote.className = "mote";

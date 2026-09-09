@@ -156,3 +156,25 @@ html { scroll-behavior: smooth; }
 .reveal.in { opacity: 1; transform: none; }
 .tilt-scene { perspective: 900px; perspective-origin: 50% 60%; transform-style: preserve-3d; }
 .tilt-layer { transition: transform 480ms cubic-bezier(.22,.61,.36,1); }
+
+/* ============================================================
+   Reduced motion — v6 motion layer freezes with the rest
+   (brief: animation must serve the design and stay comfortable;
+   under prefers-reduced-motion every ambient loop stops,
+   reveal/tilt become instant, easter-egg motion disabled)
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .city .cityscape { animation: none; }
+  .city .cityscape rect.rise { animation: none; opacity: 1; transform: none; }
+  .city-horizon { animation: none; }
+  .city-layer { animation: none; }
+  .skyline-flicker { animation: none; }
+  .sound-toggle[aria-pressed="true"] .dot { animation: none; opacity: 1; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .tilt-scene { perspective: none; }
+  .tilt-layer { transition: none; transform: none !important; }
+  html { scroll-behavior: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mote { animation: none !important; opacity: .0; }
+}
