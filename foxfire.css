@@ -218,25 +218,23 @@ body::before {
 .door-link { transition: letter-spacing .35s ease, color .25s ease; }
 .door-link:hover { color: var(--core); letter-spacing: .015em; }
 
-/* ---------- Phosphor arrive: block level (ALWAYS ON; freeze via body.motion-off) ---------- */
-{
-  .eyebrow, .hero-sub, .slab, .routes { animation: arrive .5s ease-out backwards; }
-  .eyebrow { animation-delay: 0s; }
-  .hero-sub { animation-delay: .1s; }
-  .slab { animation-delay: .18s; }
-  .routes { animation-delay: .26s; }
-  @keyframes arrive { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+/* ---------- Phosphor arrive: block level (ALWAYS ON) ---------- */
+.eyebrow, .hero-sub, .slab, .routes { animation: arrive .5s ease-out backwards; }
+.eyebrow { animation-delay: 0s; }
+.hero-sub { animation-delay: .1s; }
+.slab { animation-delay: .18s; }
+.routes { animation-delay: .26s; }
+@keyframes arrive { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-  /* ---------- Word-flicker: headline words light up one by one ---------- */
-  .hero-title .w { display: inline-block; animation: word-flicker .8s both; animation-delay: var(--wd, 0s); }
-  @keyframes word-flicker {
-    0% { opacity: 0; filter: brightness(2.2); }
-    30% { opacity: 0; }
-    46% { opacity: .9; }
-    52% { opacity: .25; }
-    60% { opacity: 1; filter: brightness(1.6); }
-    100% { opacity: 1; filter: none; }
-  }
+/* ---------- Word-flicker: headline words light up one by one ---------- */
+.hero-title .w { display: inline-block; animation: word-flicker .8s both; animation-delay: var(--wd, 0s); }
+@keyframes word-flicker {
+  0% { opacity: 0; filter: brightness(2.2); }
+  30% { opacity: 0; }
+  46% { opacity: .9; }
+  52% { opacity: .25; }
+  60% { opacity: 1; filter: brightness(1.6); }
+  100% { opacity: 1; filter: none; }
 }
 
 /* ---------- Scroll reveal (feed items, once) ---------- */
