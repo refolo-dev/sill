@@ -76,18 +76,37 @@ body::before {
 
 /* ---------- THE GLEAM (signature) ---------- */
 .gleams { position: absolute; top: 6%; right: 4%; width: min(420px, 44vw); height: 100%; min-height: 340px; pointer-events: none; z-index: 0; }
+/* Binocular eyeshine: two separated almond glows, each with a bright iris ring
+   and a darker pupil core — reads as EYES at any size, stays CSS-only. */
 .gleam { position: absolute; border-radius: 50%; mix-blend-mode: screen; }
-.gleam::after { content: ""; position: absolute; inset: 0; border-radius: 50%; }
-.gleam-a { width: 190px; height: 240px; top: 14%; right: 30%; filter: blur(34px); opacity: .95; background: radial-gradient(ellipse, var(--core) 0%, var(--tapetum) 34%, var(--tapetum) 44%, transparent 72%); animation: breathe-a 6.5s ease-in-out infinite; }
-.gleam-a::after { box-shadow: 0 0 90px 34px rgba(200,245,66,.36); }
-.gleam-b { width: 210px; height: 262px; top: 18%; right: 9%; filter: blur(38px); opacity: .9; background: radial-gradient(ellipse, #D8FF7A 0%, var(--tapetum) 30%, var(--iridium) 52%, transparent 74%); animation: breathe-b 7.8s ease-in-out infinite; }
-.gleam-b::after { box-shadow: 0 0 100px 38px rgba(200,245,66,.3); }
+.gleam-a { width: 150px; height: 190px; top: 15%; right: 34%; filter: blur(16px); opacity: 1; background:
+  radial-gradient(ellipse,
+    rgba(7,9,7,0) 0%,
+    rgba(7,9,7,.55) 14%,
+    var(--core) 26%,
+    var(--tapetum) 42%,
+    var(--tapetum) 54%,
+    rgba(200,245,66,.28) 66%,
+    transparent 82%);
+  animation: breathe-a 6.5s ease-in-out infinite; }
+.gleam-b { width: 168px; height: 208px; top: 21%; right: 9%; filter: blur(18px); opacity: .96; background:
+  radial-gradient(ellipse,
+    rgba(7,9,7,0) 0%,
+    rgba(7,9,7,.5) 14%,
+    #D8FF7A 26%,
+    var(--tapetum) 44%,
+    var(--iridium) 58%,
+    rgba(61,250,154,.24) 68%,
+    transparent 84%);
+  animation: breathe-b 7.8s ease-in-out infinite; }
+/* the halo each eye casts on the void — separate, smaller, so the two never merge */
+.gleam-a::before, .gleam-b::before { content: ""; position: absolute; inset: -55%; border-radius: 50%; background: radial-gradient(ellipse, rgba(200,245,66,.16) 0%, transparent 62%); z-index: -1; }
 @keyframes breathe-a { 0%,100% { opacity:.55; transform: scale(1); } 50% { opacity:.85; transform: scale(1.07); } }
 @keyframes breathe-b { 0%,100% { opacity:.5; transform: scale(1); } 50% { opacity:.75; transform: scale(1.11); } }
 @media (max-width: 768px) {
   .gleams { top: 2%; right: -6%; width: 300px; min-height: 260px; }
-  .gleam-a { width: 120px; height: 150px; right: 33%; filter: blur(24px); opacity: .95; }
-  .gleam-b { width: 136px; height: 168px; right: 12%; filter: blur(27px); opacity: .9; }
+  .gleam-a { width: 98px; height: 124px; right: 36%; filter: blur(10px); }
+  .gleam-b { width: 112px; height: 140px; right: 10%; filter: blur(12px); opacity: .96; }
 }
 
 /* ---------- Invitation slab ---------- */
