@@ -167,6 +167,50 @@ body::before {
 .qa p { color: #C9D6C2; max-width: 60ch; }
 .quiet a { color: var(--iridium); }
 
+
+/* ---------- ALWAYS-ON AMBIENT (no media gating; freeze only via body.motion-off) ---------- */
+/* Eyes dilate reactively when pointer nears slab/eyes zone */
+@media (hover: hover) {
+  .gleams { transition: transform .6s cubic-bezier(.2,.9,.3,1), filter .6s ease; }
+  .gleams.near { transform: scale(1.18); filter: brightness(1.3) saturate(1.15); }
+  .slab:hover ~ .door .door-link, .hero:has(.slab:hover) .gleams { transform: scale(1.16); filter: brightness(1.25); }
+}
+
+/* Sporefield: persistent rising phosphor spores (no JS needed; JS adds more) */
+.sporefield { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.spore { position: absolute; bottom: -12px; width: 5px; height: 5px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,245,66,.9), rgba(61,250,154,.4) 55%, transparent 75%);
+  filter: blur(.6px); opacity: 0; animation: spore-rise linear infinite; }
+.spore.s2 { width: 3px; height: 3px; }
+.spore.s3 { width: 7px; height: 7px; }
+@keyframes spore-rise {
+  0% { transform: translate3d(0, 0, 0) scale(.6); opacity: 0; }
+  8% { opacity: .9; }
+  50% { transform: translate3d(14px, -50vh, 0) scale(1); opacity: .55; }
+  85% { opacity: .25; }
+  100% { transform: translate3d(-10px, -105vh, 0) scale(.8); opacity: 0; }
+}
+/* bg breathing behind hero */
+.hero::after { content: ""; position: absolute; inset: -12%; z-index: -1; pointer-events: none;
+  background: radial-gradient(58% 46% at 72% 34%, rgba(200,245,66,.05), transparent 68%);
+  animation: hero-breathe 14s ease-in-out infinite; }
+@keyframes hero-breathe {
+  0%, 100% { opacity: .5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+/* Census: keep ticking after count-up (JS drives .tick flash) */
+.census b.tick { color: var(--core); text-shadow: 0 0 14px rgba(200,245,66,.8); transition: color .18s, text-shadow .18s; }
+
+/* Heat pulse on idle feed items (JS interval adds .heat) */
+.mp-item.heat { animation: heat-pulse 1.5s ease-in-out; }
+@keyframes heat-pulse {
+  0%, 100% { box-shadow: none; }
+  50% { box-shadow: 0 0 26px rgba(200,245,66,.14), inset 0 0 0 1px rgba(200,245,66,.25); }
+}
+/* Route hover lift */
+.route { transition: transform .25s ease, box-shadow .25s ease; }
+.route:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 24px rgba(200,245,66,.08); }
+
 /* ---------- Door (footer) ---------- */
 .door { max-width: 760px; margin: 0 auto; padding: 64px clamp(16px, 5vw, 48px) 96px; }
 .docs-nav { display: flex; flex-wrap: wrap; gap: 14px 24px; margin-bottom: 40px; font-size: 14px; }
@@ -174,8 +218,8 @@ body::before {
 .door-link { transition: letter-spacing .35s ease, color .25s ease; }
 .door-link:hover { color: var(--core); letter-spacing: .015em; }
 
-/* ---------- Phosphor arrive: block level ---------- */
-@media (prefers-reduced-motion: no-preference) {
+/* ---------- Phosphor arrive: block level (ALWAYS ON; freeze via body.motion-off) ---------- */
+{
   .eyebrow, .hero-sub, .slab, .routes { animation: arrive .5s ease-out backwards; }
   .eyebrow { animation-delay: 0s; }
   .hero-sub { animation-delay: .1s; }
@@ -200,10 +244,9 @@ body::before {
 .reveal.in { animation: rise-in .55s ease-out both; }
 @keyframes rise-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
-/* ---------- Reduced motion: everything frozen ---------- */
-@media (prefers-reduced-motion: reduce) {
-  .gleam { animation: none !important; opacity: .55; }
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+/* ---------- Motion freeze: class-based (body.motion-off), NOT media-gated ---------- */
+body.motion-off *, body.motion-off *::before, body.motion-off *::after {
+  animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important;
 }
 
 /* ---------- Phone ---------- */
@@ -216,3 +259,18 @@ body::before {
   .routes { flex-direction: column; }
   .route { min-height: 64px; }
 }
+
+/* ---------- MOTION TOGGLE (always visible, bottom-right) ---------- */
+#motion-toggle { position: fixed; right: 14px; bottom: 14px; z-index: 90;
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(7, 9, 7, .82); color: var(--quiet, #8A9A82);
+  font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .06em;
+  border: 1px solid #1E2A20; border-radius: 999px; padding: 7px 12px;
+  cursor: pointer; backdrop-filter: blur(4px); }
+#motion-toggle i { width: 7px; height: 7px; border-radius: 50%;
+  background: var(--core, #C8F542); box-shadow: 0 0 8px rgba(200,245,66,.9);
+  animation: toggle-dot 2.4s ease-in-out infinite; }
+@keyframes toggle-dot { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+#motion-toggle[aria-pressed="false"] i { background: #556055; box-shadow: none; animation: none; }
+#motion-toggle:hover { color: var(--moon, #E7EDE4); border-color: #2E3D2E; }
+body.motion-off #motion-toggle i { background: #556055; box-shadow: none; animation: none; }

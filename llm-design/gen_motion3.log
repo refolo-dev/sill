@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\user\agent-research\sill-gh\llm-design\gen_motion3.py", line 47, in <module>
+    'messages': [{'role': 'user', 'content': prompt % (css, js)}],
+                                             ~~~~~~~^~~~~~~~~~~
+ValueError: unsupported format character ',' (0x2c) at index 1297
