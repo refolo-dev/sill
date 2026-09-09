@@ -238,36 +238,12 @@
   }
 }
 
-/* ---------- REDUCED MOTION: static end-states ---------- */
-@media (prefers-reduced-motion: reduce) {
-  /* Eyes visible, no drift/blink */
-  .gleams { opacity: 1; transform: none; }
-  .gleam-a, .gleam-b { 
-    animation: none !important; 
-    opacity: 0.55; 
-    transform: none !important;
-    filter: blur(15px) !important;
-  }
-  
-  /* All content visible immediately */
-  .reveal { opacity: 1 !important; transform: none !important; }
-  .in { animation: none !important; }
-  
-  /* No hover effects on motion */
-  .census::before { display: none; }
-  .door-link { 
-    background: none; 
-    -webkit-text-fill-color: var(--tapetum);
-    color: var(--tapetum);
-  }
-  
-  /* Transitions allowed for color/opacity (WCAG) */
-  * { 
-    animation: none !important;
-    transition-property: color, background-color, border-color, opacity, box-shadow !important;
-    transition-duration: 0.2s !important;
-  }
-}
+
+/* ---------- MOTION FREEZE (class-based only; OS flag deliberately ignored per client) ---------- */
+body.motion-off .gleam-a, body.motion-off .gleam-b { animation: none !important; transform: none !important; opacity: .55 !important; }
+body.motion-off .reveal { opacity: 1 !important; transform: none !important; animation: none !important; }
+body.motion-off .census::before { display: none; }
+body.motion-off .hero-title .w { animation: none !important; opacity: 1 !important; filter: none !important; }
 
 /* ---------- OFFSCREEN PAUSE: pause eye animations when hero not in viewport ---------- */
 /* JS will add .offscreen to .gleams when hero exits viewport to save battery */

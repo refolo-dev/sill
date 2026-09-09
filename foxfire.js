@@ -7,7 +7,8 @@
 (function () {
   'use strict';
 
-  var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* Client directive: motion ALWAYS ON; OS reduce flag ignored. Freeze only via body.motion-off. */
+  var REDUCED = document.body.classList.contains('motion-off');
 
   /* -------------------- HOMEPAGE ONLY -------------------- */
   
