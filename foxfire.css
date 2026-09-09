@@ -32,6 +32,12 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; }
+/* on-brand scrollbar: a thin phosphor trace, not a system bar */
+html { scrollbar-color: #2E3D2E var(--void); scrollbar-width: thin; }
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: var(--void); }
+::-webkit-scrollbar-thumb { background: #2E3D2E; border-radius: 5px; border: 2px solid var(--void); }
+::-webkit-scrollbar-thumb:hover { background: #3F523F; }
 a { color: var(--tapetum); text-underline-offset: 5px; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--tapetum); outline-offset: 3px; }
 .quiet { color: var(--quiet); }
