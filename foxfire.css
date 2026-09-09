@@ -39,16 +39,32 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--tapetum); outli
 .skip { position: absolute; left: -9999px; top: 0; padding: 12px 18px; background: var(--tapetum); color: var(--void); z-index: 99; }
 .skip:focus { left: 12px; top: 12px; }
 
-/* ---------- Spore field (felt, not seen) ---------- */
+/* ---------- Spore field: felt drift + parallax shimmer ---------- */
 body::before {
   content: "";
-  position: fixed; inset: 0;
+  position: fixed; inset: -60px;
   pointer-events: none; z-index: 0;
   background:
-    repeating-radial-gradient(circle at 12% 20%, transparent 0 2px, rgba(200,245,66,.028) 2px 2.6px),
-    repeating-radial-gradient(circle at 78% 64%, transparent 0 3px, rgba(61,250,154,.024) 3px 3.8px),
+    repeating-radial-gradient(circle at 12% 20%, transparent 0 2px, rgba(200,245,66,.03) 2px 2.6px),
+    repeating-radial-gradient(circle at 78% 64%, transparent 0 3px, rgba(61,250,154,.026) 3px 3.8px),
     repeating-radial-gradient(circle at 46% 92%, transparent 0 2.4px, rgba(231,237,228,.02) 2.4px 3px);
+  animation: spore-drift 26s linear infinite alternate;
 }
+@keyframes spore-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-34px, -22px, 0) scale(1.06); }
+}
+
+/* ---------- EYES: rare blink ---------- */
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  94%, 96% { transform: scaleY(.06); }
+  98% { transform: scaleY(1); }
+}
+.gleam-a { animation: breathe-a 6.5s ease-in-out infinite, blink 11s ease-in-out infinite; }
+.gleam-b { animation: breathe-b 7.8s ease-in-out infinite, blink 11.3s ease-in-out .2s; }
+
+/* ---------- Census: count-up is JS; CSS just keeps tabular ---------- */
 
 /* ---------- Topbar ---------- */
 .topbar {
@@ -111,7 +127,7 @@ body::before {
 }
 
 /* ---------- Invitation slab ---------- */
-.slab { position: relative; z-index: 2; max-width: 560px; background: var(--wood2); padding: 26px 28px 28px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(200,245,66,.8), 0 0 0 1px rgba(200,245,66,.18), 0 0 0 5px var(--wood2), 0 0 0 6px rgba(200,245,66,.12); }
+.slab { position: relative; z-index: 2; max-width: 560px; background: var(--wood2); padding: 26px 28px 28px; border-radius: 2px; transition: box-shadow .6s ease; box-shadow: inset 0 0 0 1px rgba(200,245,66,.8), 0 0 0 1px rgba(200,245,66,.18), 0 0 0 5px var(--wood2), 0 0 0 6px rgba(200,245,66,.12); }
 .slab-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .22em; color: var(--quiet); font-weight: 500; margin: 0 0 16px; }
 .invite { font-family: 'IBM Plex Mono', monospace; font-size: 15px; line-height: 1.55; margin: 0 0 20px; user-select: all; -webkit-user-select: all; }
 .copy { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 56px; padding: 12px 18px; background: var(--tapetum); border: 0; border-radius: 2px; color: #0A0F0A; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: .04em; cursor: pointer; }
@@ -124,7 +140,9 @@ body::before {
 .route { flex: 1 1 160px; display: flex; flex-direction: column; gap: 4px; min-height: 72px; padding: 16px 18px; background: var(--wood); color: var(--moon); text-decoration: none; border-radius: 2px; box-shadow: inset 0 0 0 1px #223026; }
 .route b { font-family: 'Fraunces', Georgia, serif; font-size: 17px; font-weight: 600; }
 .route span { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--iridium); }
-.route:hover { box-shadow: inset 0 0 0 1px var(--tapetum); }
+.route { transition: box-shadow .25s ease, transform .25s ease; }
+.route:hover { box-shadow: inset 0 0 0 1px var(--tapetum), 0 0 24px rgba(200,245,66,.14); transform: translateY(-2px); }
+.route:active { transform: translateY(0); }
 
 /* ---------- Fold ---------- */
 .hero-fold { margin: 72px 0 0; }
@@ -147,17 +165,34 @@ body::before {
 .door { max-width: 760px; margin: 0 auto; padding: 64px clamp(16px, 5vw, 48px) 96px; }
 .docs-nav { display: flex; flex-wrap: wrap; gap: 14px 24px; margin-bottom: 40px; font-size: 14px; }
 .door-link { display: inline-block; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: clamp(24px, 3.6vw, 34px); color: var(--tapetum); text-decoration: none; margin-bottom: 24px; }
-.door-link:hover { color: var(--core); }
+.door-link { transition: letter-spacing .35s ease, color .25s ease; }
+.door-link:hover { color: var(--core); letter-spacing: .015em; }
 
-/* ---------- Phosphor arrive (once, on load) ---------- */
+/* ---------- Phosphor arrive: block level ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .eyebrow, .hero-title, .hero-sub, .slab, .routes { animation: arrive .5s ease-out backwards; }
-  .hero-title { animation-delay: .05s; }
+  .eyebrow, .hero-sub, .slab, .routes { animation: arrive .5s ease-out backwards; }
+  .eyebrow { animation-delay: 0s; }
   .hero-sub { animation-delay: .1s; }
-  .slab { animation-delay: .15s; }
-  .routes { animation-delay: .2s; }
+  .slab { animation-delay: .18s; }
+  .routes { animation-delay: .26s; }
   @keyframes arrive { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Word-flicker: headline words light up one by one ---------- */
+  .hero-title .w { display: inline-block; animation: word-flicker .8s both; animation-delay: var(--wd, 0s); }
+  @keyframes word-flicker {
+    0% { opacity: 0; filter: brightness(2.2); }
+    30% { opacity: 0; }
+    46% { opacity: .9; }
+    52% { opacity: .25; }
+    60% { opacity: 1; filter: brightness(1.6); }
+    100% { opacity: 1; filter: none; }
+  }
 }
+
+/* ---------- Scroll reveal (feed items, once) ---------- */
+.reveal { opacity: 0; }
+.reveal.in { animation: rise-in .55s ease-out both; }
+@keyframes rise-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
 /* ---------- Reduced motion: everything frozen ---------- */
 @media (prefers-reduced-motion: reduce) {

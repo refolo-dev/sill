@@ -1,0 +1,277 @@
+/* ============================================================
+   FOXFIRE MOTION LAYER — contest final
+   Loaded after foxfire.css; all animation lives here.
+   Everything gates behind prefers-reduced-motion.
+   ============================================================ */
+
+/* ---------- HERO SEQUENCE: 3-second assembly ---------- */
+/* Spore field (base CSS) already drifts. Hero blocks arrive in sequence. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Eyebrow, sub, slab, routes already stagger in base; extend with gleam delay */
+  .gleams { 
+    animation: eyes-emerge 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards; 
+  }
+  @keyframes eyes-emerge {
+    from { opacity: 0; transform: scale(0.88) translateY(20px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* Hero-title words flicker (already in base CSS via .w spans) */
+  /* Fold link pulses invitation after hero settles */
+  .fold-link { animation: pulse-invite 2s ease-in-out 2.6s infinite; }
+  @keyframes pulse-invite {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  /* ---------- THE EYES: living presence ---------- */
+  /* 1. Breathing + blinking (base CSS already has breathe-a/b + blink) */
+  /* 2. EYE TRACKING: very slow horizontal drift, as if following movement */
+  .gleam-a { 
+    animation: 
+      breathe-a 6.5s ease-in-out infinite, 
+      blink 11s ease-in-out infinite,
+      eye-track-a 34s ease-in-out infinite;
+  }
+  .gleam-b { 
+    animation: 
+      breathe-b 7.8s ease-in-out infinite, 
+      blink 11.3s ease-in-out infinite,
+      eye-track-b 38s ease-in-out infinite 1.2s;
+  }
+  @keyframes eye-track-a {
+    0%, 100% { transform: translateX(0); }
+    33% { transform: translateX(-8px); }
+    66% { transform: translateX(6px); }
+  }
+  @keyframes eye-track-b {
+    0%, 100% { transform: translateX(0); }
+    40% { transform: translateX(7px); }
+    70% { transform: translateX(-5px); }
+  }
+
+  /* 3. DILATION on scroll (JS will toggle .dilate class when user scrolls past hero) */
+  .gleams.dilate .gleam-a,
+  .gleams.dilate .gleam-b {
+    animation-duration: 4s, 11s, 34s; /* speed up breathing when dilated */
+    filter: blur(18px) brightness(1.15);
+  }
+
+  /* ---------- FEED BROWSING: rhythmic scan pleasure ---------- */
+  /* Feed items (.mp-item) already have .reveal + .in; add stagger polish */
+  .mp-item.reveal { 
+    opacity: 0; 
+    transform: translateY(18px); 
+  }
+  .mp-item.in { 
+    animation: feed-rise 0.65s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: var(--stagger, 0s);
+  }
+  @keyframes feed-rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Hover: phosphor glow trace (GPU-cheap box-shadow) */
+  .mp-item { 
+    transition: box-shadow 0.4s ease, transform 0.25s ease; 
+  }
+  .mp-item:hover {
+    box-shadow: 
+      inset 0 0 0 1px rgba(200, 245, 66, 0.3),
+      0 0 28px rgba(200, 245, 66, 0.08),
+      0 0 12px rgba(61, 250, 154, 0.12);
+    transform: translateX(4px);
+  }
+
+  /* ---------- ARTICLE READING: paragraph reward ---------- */
+  /* As user scrolls through article, paragraphs that enter viewport get faint phosphor trail */
+  .art-body > p.reveal {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .art-body > p.in {
+    animation: para-bloom 0.7s ease-out backwards;
+    animation-delay: var(--stagger, 0s);
+  }
+  @keyframes para-bloom {
+    from { 
+      opacity: 0; 
+      transform: translateY(12px);
+      filter: brightness(1.3);
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0);
+      filter: brightness(1);
+    }
+  }
+
+  /* Finishing an article section: quiet glow reward */
+  .art-body > h2.in,
+  .art-body > h3.in {
+    animation: heading-glow 1s ease-out backwards;
+  }
+  @keyframes heading-glow {
+    from { 
+      opacity: 0; 
+      text-shadow: 0 0 24px rgba(200, 245, 66, 0.4);
+    }
+    to { 
+      opacity: 1; 
+      text-shadow: none;
+    }
+  }
+
+  /* ---------- HIDDEN DELIGHT: spore bloom on census hover ---------- */
+  /* When you hover the census, a single spore "blooms" from behind it */
+  .census {
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .census::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 80px; height: 80px;
+    margin: -40px 0 0 -40px;
+    background: radial-gradient(
+      circle,
+      rgba(200, 245, 66, 0.2) 0%,
+      rgba(61, 250, 154, 0.15) 30%,
+      transparent 70%
+    );
+    opacity: 0;
+    transform: scale(0.3);
+    pointer-events: none;
+    z-index: -1;
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .census:hover::before {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ---------- ROUTE CARDS: sequential glow on first paint ---------- */
+  .route {
+    animation: route-glow 0.8s ease-out backwards;
+    animation-delay: calc(0.3s + var(--route-idx, 0) * 0.1s);
+  }
+  @keyframes route-glow {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+      box-shadow: 
+        inset 0 0 0 1px rgba(200, 245, 66, 0.6),
+        0 0 32px rgba(200, 245, 66, 0.3);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      box-shadow: inset 0 0 0 1px #223026;
+    }
+  }
+
+  /* ---------- INVITATION SLAB: pulse on ready ---------- */
+  .slab {
+    animation: slab-ready 1.5s ease-out 0.6s backwards;
+  }
+  @keyframes slab-ready {
+    0% {
+      opacity: 0;
+      transform: translateY(16px) scale(0.98);
+      box-shadow: 
+        inset 0 0 0 1px rgba(200, 245, 66, 0),
+        0 0 0 1px rgba(200, 245, 66, 0),
+        0 0 40px rgba(200, 245, 66, 0.4);
+    }
+    60% {
+      box-shadow: 
+        inset 0 0 0 1px rgba(200, 245, 66, 1),
+        0 0 0 1px rgba(200, 245, 66, 0.3),
+        0 0 40px rgba(200, 245, 66, 0.2);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+      box-shadow: 
+        inset 0 0 0 1px rgba(200, 245, 66, 0.8),
+        0 0 0 1px rgba(200, 245, 66, 0.18),
+        0 0 0 5px var(--wood2),
+        0 0 0 6px rgba(200, 245, 66, 0.12);
+    }
+  }
+
+  /* Copy button: ripple on click (JS will add .ripple class) */
+  @keyframes button-ripple {
+    0% {
+      box-shadow: 0 0 0 0 rgba(200, 245, 66, 0.6);
+    }
+    100% {
+      box-shadow: 0 0 0 20px rgba(200, 245, 66, 0);
+    }
+  }
+  .copy.ripple {
+    animation: button-ripple 0.6s ease-out;
+  }
+
+  /* ---------- DOOR LINK: letter-spacing already transitions; add subtle shimmer ---------- */
+  .door-link {
+    background: linear-gradient(
+      90deg,
+      var(--tapetum) 0%,
+      var(--core) 50%,
+      var(--tapetum) 100%
+    );
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 8s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .door-link:hover {
+    animation-duration: 2s;
+  }
+}
+
+/* ---------- REDUCED MOTION: static end-states ---------- */
+@media (prefers-reduced-motion: reduce) {
+  /* Eyes visible, no drift/blink */
+  .gleams { opacity: 1; transform: none; }
+  .gleam-a, .gleam-b { 
+    animation: none !important; 
+    opacity: 0.55; 
+    transform: none !important;
+    filter: blur(15px) !important;
+  }
+  
+  /* All content visible immediately */
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .in { animation: none !important; }
+  
+  /* No hover effects on motion */
+  .census::before { display: none; }
+  .door-link { 
+    background: none; 
+    -webkit-text-fill-color: var(--tapetum);
+    color: var(--tapetum);
+  }
+  
+  /* Transitions allowed for color/opacity (WCAG) */
+  * { 
+    animation: none !important;
+    transition-property: color, background-color, border-color, opacity, box-shadow !important;
+    transition-duration: 0.2s !important;
+  }
+}
+
+/* ---------- OFFSCREEN PAUSE: pause eye animations when hero not in viewport ---------- */
+/* JS will add .offscreen to .gleams when hero exits viewport to save battery */
+.gleams.offscreen .gleam-a,
+.gleams.offscreen .gleam-b {
+  animation-play-state: paused;
+}
