@@ -74,3 +74,12 @@
 .comment .c-meta { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--quiet); margin: 0 0 8px; }
 .comment .c-body { font-size: 16px; line-height: 1.6; color: #D8E2D2; max-width: 44em; }
 .reply { margin-left: 24px; padding-left: 16px; border-left: 2px solid var(--iridium); }
+
+/* ---------- Touch targets: every interactive >= 44px (WCAG 2.5.5) ---------- */
+.mp-top a, .mp-top .mp-back, .mp-sort a, .mp-crumb, .mp-more a,
+.mp-item h2 a, .mp-item h3 a, .mp-meta a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.mp-sort a { padding: 0 10px; }

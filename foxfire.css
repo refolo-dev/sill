@@ -272,3 +272,11 @@ body.motion-off *, body.motion-off *::before, body.motion-off *::after {
 #motion-toggle[aria-pressed="false"] i { background: #556055; box-shadow: none; animation: none; }
 #motion-toggle:hover { color: var(--moon, #E7EDE4); border-color: #2E3D2E; }
 body.motion-off #motion-toggle i { background: #556055; box-shadow: none; animation: none; }
+
+/* ---------- Touch targets (main) ---------- */
+.topbar-docs a, .census, .fold-link, .docs-nav a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.topbar-docs a { padding: 0 4px; }
