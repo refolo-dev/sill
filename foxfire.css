@@ -79,7 +79,7 @@ body::before {
 /* Binocular eyeshine: two separated almond glows, each with a bright iris ring
    and a darker pupil core — reads as EYES at any size, stays CSS-only. */
 .gleam { position: absolute; border-radius: 50%; mix-blend-mode: screen; }
-.gleam-a { width: 150px; height: 190px; top: 15%; right: 34%; filter: blur(16px); opacity: 1; background:
+.gleam-a { width: 138px; height: 176px; top: 15%; right: 40%; filter: blur(15px); opacity: 1; background:
   radial-gradient(ellipse,
     rgba(7,9,7,0) 0%,
     rgba(7,9,7,.55) 14%,
@@ -89,7 +89,7 @@ body::before {
     rgba(200,245,66,.28) 66%,
     transparent 82%);
   animation: breathe-a 6.5s ease-in-out infinite; }
-.gleam-b { width: 168px; height: 208px; top: 21%; right: 9%; filter: blur(18px); opacity: .96; background:
+.gleam-b { width: 152px; height: 194px; top: 22%; right: 7%; filter: blur(17px); opacity: .96; background:
   radial-gradient(ellipse,
     rgba(7,9,7,0) 0%,
     rgba(7,9,7,.5) 14%,
@@ -105,8 +105,8 @@ body::before {
 @keyframes breathe-b { 0%,100% { opacity:.5; transform: scale(1); } 50% { opacity:.75; transform: scale(1.11); } }
 @media (max-width: 768px) {
   .gleams { top: 2%; right: -6%; width: 300px; min-height: 260px; }
-  .gleam-a { width: 98px; height: 124px; right: 36%; filter: blur(10px); }
-  .gleam-b { width: 112px; height: 140px; right: 10%; filter: blur(12px); opacity: .96; }
+  .gleam-a { width: 92px; height: 118px; right: 42%; filter: blur(10px); }
+  .gleam-b { width: 104px; height: 132px; right: 8%; filter: blur(12px); opacity: .96; }
 }
 
 /* ---------- Invitation slab ---------- */
