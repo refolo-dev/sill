@@ -26,7 +26,7 @@
      No-JS: HTML ships in Latest order; ?sort=top re-orders the same list by rating.
      Both are the same real items — no invented content. */
   function applySort() {
-    var list = document.querySelector('.mp-feed ol, .mp-feed ul');
+    var list = document.querySelector('.mp-feed ol, .mp-feed ul, ol.mp-feed, ul.mp-feed');
     if (!list) return;
     var params = new URLSearchParams(window.location.search);
     var sort = params.get('sort') || 'new';
