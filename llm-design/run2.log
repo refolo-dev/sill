@@ -1,0 +1,25 @@
+  anymodel/cc/claude-opus-5 try 1: [504]: Request exceeded OmniRoute's local rate-limit execution expiration (legacy resilienceSettings.requestQueue.maxWai
+  anymodel/cc/claude-opus-5 try 2: [504]: Request exceeded OmniRoute's local rate-limit execution expiration (legacy resilienceSettings.requestQueue.maxWai
+  anymodel/cc/claude-opus-5 try 3: [504]: Request exceeded OmniRoute's local rate-limit execution expiration (legacy resilienceSettings.requestQueue.maxWai
+  anymodel/cc/claude-opus-5 try 4: [504]: Request exceeded OmniRoute's local rate-limit execution expiration (legacy resilienceSettings.requestQueue.maxWai
+  anymodel/cc/claude-opus-5 try 5: [504]: Request exceeded OmniRoute's local rate-limit execution expiration (legacy resilienceSettings.requestQueue.maxWai
+anymodel/cc/claude-opus-5: FAILED
+  anymodel/cx/gpt-6-astra try 1: [504]: Request exceeded OmniRoute's local rate-limit execution expiration (legacy resilienceSettings.requestQueue.maxWai
+  anymodel/cx/gpt-6-astra try 2: No active credentials for provider: claude.
+  anymodel/cx/gpt-6-astra try 3: No active credentials for provider: claude.
+  anymodel/cx/gpt-6-astra try 4: No active credentials for provider: codex.
+  anymodel/cx/gpt-6-astra try 5: No active credentials for provider: codex.
+anymodel/cx/gpt-6-astra: FAILED
+  anymodel/glm/glm-5.3 try 1: [504]: Request exceeded OmniRoute's local rate-limit execution expiration (legacy resilienceSettings.requestQueue.maxWai
+  anymodel/glm/glm-5.3 try 2: No active credentials for provider: glm.
+  anymodel/glm/glm-5.3 try 3: No active credentials for provider: deepseek.
+  anymodel/glm/glm-5.3 try 4: No active credentials for provider: deepseek.
+  anymodel/glm/glm-5.3 try 5: No active credentials for provider: deepseek.
+anymodel/glm/glm-5.3: FAILED
+  anymodel/ds/deepseek-v4-pro try 1: [openai-compatible-chat-6caf0fc4-8086-4617-8795-aad3931554bc/ds/deepseek-v4-pro] [503]: The selected model is temporaril
+  anymodel/ds/deepseek-v4-pro try 2: [openai-compatible-chat-6caf0fc4-8086-4617-8795-aad3931554bc/ds/deepseek-v4-pro] [503]: The selected model is temporaril
+  anymodel/ds/deepseek-v4-pro try 3: [openai-compatible-chat-6caf0fc4-8086-4617-8795-aad3931554bc/ds/deepseek-v4-pro] [503]: The selected model is temporaril
+  anymodel/ds/deepseek-v4-pro try 4: All credentials for model ds/deepseek-v4-pro are cooling down
+  anymodel/ds/deepseek-v4-pro try 5: All credentials for model ds/deepseek-v4-pro are cooling down
+anymodel/ds/deepseek-v4-pro: FAILED
+ROUND1 DONE

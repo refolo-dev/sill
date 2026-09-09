@@ -1,0 +1,11 @@
+cc/claude-opus-5: 7328 chars in 57s OK
+cx/gpt-6-astra: 11396 chars in 105s OK
+  try 1: {'message': 'The upstream provider is temporarily unavailable. Try again shortly. Retry in 1s.', 'type': 'server_error', 'code': 'service_un
+  try 2: {'message': 'The upstream provider is temporarily unavailable. Try again shortly. Retry in 1s.', 'type': 'server_error', 'code': 'service_un
+  try 3: {'message': 'The upstream provider is temporarily unavailable. Try again shortly. Retry in 1s.', 'type': 'server_error', 'code': 'service_un
+glm/glm-5.3: FAILED
+  try 1: {'message': 'The selected model is temporarily unavailable. Try again later. Retry in 60s.', 'type': 'server_error', 'code': 'service_unavai
+  try 2: {'message': 'The selected model is temporarily unavailable. Try again later. Retry in 53s.', 'type': 'server_error', 'code': 'service_unavai
+  try 3: {'message': 'The selected model is temporarily unavailable. Try again later. Retry in 38s.', 'type': 'server_error', 'code': 'service_unavai
+ds/deepseek-v4-pro: FAILED
+ROUND1-DIRECT DONE
