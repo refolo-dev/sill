@@ -76,16 +76,18 @@ body::before {
 
 /* ---------- THE GLEAM (signature) ---------- */
 .gleams { position: absolute; top: 6%; right: 4%; width: min(420px, 44vw); height: 100%; min-height: 340px; pointer-events: none; z-index: 0; }
-.gleam { position: absolute; border-radius: 50%; filter: blur(78px); mix-blend-mode: screen; opacity: .62; }
-.gleam-a { width: 260px; height: 320px; top: 12%; right: 26%; background: radial-gradient(ellipse, var(--core) 0%, var(--tapetum) 28%, transparent 68%); animation: breathe-a 6.5s ease-in-out infinite; }
-.gleam-b { width: 300px; height: 360px; top: 16%; right: 6%; background: radial-gradient(ellipse, var(--tapetum) 0%, var(--iridium) 26%, transparent 64%); animation: breathe-b 7.8s ease-in-out infinite; }
+.gleam { position: absolute; border-radius: 50%; mix-blend-mode: screen; }
+.gleam::after { content: ""; position: absolute; inset: 0; border-radius: 50%; }
+.gleam-a { width: 190px; height: 240px; top: 14%; right: 30%; filter: blur(34px); opacity: .95; background: radial-gradient(ellipse, var(--core) 0%, var(--tapetum) 34%, var(--tapetum) 44%, transparent 72%); animation: breathe-a 6.5s ease-in-out infinite; }
+.gleam-a::after { box-shadow: 0 0 90px 34px rgba(200,245,66,.36); }
+.gleam-b { width: 210px; height: 262px; top: 18%; right: 9%; filter: blur(38px); opacity: .9; background: radial-gradient(ellipse, #D8FF7A 0%, var(--tapetum) 30%, var(--iridium) 52%, transparent 74%); animation: breathe-b 7.8s ease-in-out infinite; }
+.gleam-b::after { box-shadow: 0 0 100px 38px rgba(200,245,66,.3); }
 @keyframes breathe-a { 0%,100% { opacity:.55; transform: scale(1); } 50% { opacity:.85; transform: scale(1.07); } }
 @keyframes breathe-b { 0%,100% { opacity:.5; transform: scale(1); } 50% { opacity:.75; transform: scale(1.11); } }
 @media (max-width: 768px) {
   .gleams { top: 2%; right: -6%; width: 300px; min-height: 260px; }
-  .gleam { filter: blur(60px); }
-  .gleam-a { width: 170px; height: 210px; right: 34%; }
-  .gleam-b { width: 200px; height: 240px; right: 14%; }
+  .gleam-a { width: 120px; height: 150px; right: 33%; filter: blur(24px); opacity: .95; }
+  .gleam-b { width: 136px; height: 168px; right: 12%; filter: blur(27px); opacity: .9; }
 }
 
 /* ---------- Invitation slab ---------- */
@@ -95,7 +97,7 @@ body::before {
 .copy { display: block; width: 100%; min-height: 56px; padding: 12px 18px; background: var(--tapetum); border: 0; border-radius: 2px; color: #0A0F0A; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: .04em; cursor: pointer; }
 .copy:hover { background: var(--core); }
 .copy:active { transform: translateY(1px); }
-.copy-status { font-size: 13px; color: var(--quiet); margin: 14px 0 0; }
+.copy-status { font-size: 13px; color: var(--quiet); margin: 16px 0 0; line-height: 1.5; }
 
 /* ---------- Routes ---------- */
 .routes { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; max-width: 720px; }

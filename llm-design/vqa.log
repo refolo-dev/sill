@@ -1,0 +1,61 @@
+===== foxfire-desktop.jpg =====
+ERR: {"error":{"message":"The selected model is unavailable.","type":"server_error","code":"service_unavailable","status":503,"request_id":"err_9b4c6132-c05a-45eb-a056-48871922546a"}}
+
+===== foxfire-phone.jpg =====
+Here is the QA report for the provided screenshot:
+
+**1) Layout, Typography, and Colors**
+*   **Layout:** Centered, single-column mobile-first design with a dark, atmospheric aesthetic.
+*   **Typography:** High-contrast pairing of a bold, elegant serif (headings) with a clean, monospaced font (body/code).
+*   **Colors:** Deep black/charcoal background with a subtle radial green gradient; high-visibility lime green used for accents and call-to-action buttons.
+
+**2) Visual Quality**
+*   **Rating: 9/10.** The design is polished, professional, and effectively uses a "cyber-minimalist" aesthetic, though the "Copy failed" text feels slightly cramped at the bottom of the card.
+
+**3) Broken/Empty/Misaligned Elements**
+*   **Alignment:** The "Copy failed" text is left-aligned while the button above it is centered, creating a slight visual imbalance in the card footer.
+*   **Functionality:** The "Copy failed" message suggests a potential UX issue where the primary interaction (the button) may not be triggering the clipboard API correctly, forcing the user to manual selection.
+*   **Spacing:** The padding inside the main card is tight; the "Copy failed" text sits very close to the bottom border.
+
+**4) Green Glowing "Eyeshine"**
+*   **No.** There is no "eyeshine" (two distinct, symmetrical glowing dots/orbs) present in this screenshot. The green lighting is a soft, ambient radial gradient emanating from the center-right, not a pair of eyes.
+
+===== foxfire-desktop-feed.jpg =====
+Here is the QA report for the provided screenshot:
+
+**1) Layout, Typography, and Colors**
+*   **Layout:** Minimalist, list-based feed structure. High-contrast, dark-mode aesthetic.
+*   **Typography:** Sans-serif, monospaced-style font. Hierarchical sizing is clear, though the line spacing between the title and metadata is tight.
+*   **Colors:** Deep black background (#000000) with high-visibility neon yellow/lime (#CCFF00) for primary headers and links.
+
+**2) Visual Quality: 7/10**
+*   The design is clean and functional, but the lack of visual breathing room (padding) between post blocks makes the page feel slightly cramped and "heavy."
+
+**3) Broken/Empty/Misaligned Elements**
+*   **Alignment:** The "Latest Top" header is left-aligned with the post numbers, but the post titles are indented differently, creating a jagged vertical left edge that looks unpolished.
+*   **Spacing:** The vertical rhythm is inconsistent; the gap between the metadata (e.g., "claude-sonnet-scout") and the *next* post number is too small, making it difficult to distinguish where one entry ends and the next begins.
+
+**4) Eyeshine Check**
+*   **No.** There is no green glowing "eyeshine" pair present in this screenshot. The color palette is strictly limited to text-based neon yellow and white/grey on a black background.
+
+===== foxfire-phone-article.jpg =====
+Here is the QA report for the provided screenshot:
+
+**1) Layout/Typography/Colors**
+*   **Layout:** Clean, single-column reading interface with a top navigation bar.
+*   **Typography:** High-contrast serif for the headline; a clean, legible sans-serif for the body text.
+*   **Colors:** Dark mode aesthetic using a deep black background with a subtle diagonal-line texture, paired with off-white/cream text for readability.
+
+**2) Visual Quality**
+*   **Score: 9/10**
+*   **Reason:** The design is sophisticated and professional, though the "3 points" icon appears slightly blurry or pixelated compared to the crisp text.
+
+**3) Broken/Empty/Misaligned Elements**
+*   **Alignment:** The "3 points" text and the green dot icon are vertically misaligned; the text sits slightly higher than the center of the dot.
+*   **Spacing:** The top navigation bar feels slightly cramped against the top edge of the screen.
+*   **Content:** No broken or empty elements detected; the hierarchy is clear.
+
+**4) Green Glowing "Eyeshine"**
+*   **No.** There is only a single green dot (a standard status indicator) next to the "3 points" text. There is no "pair" of glowing eyes or "eyeshine" effect present in this screenshot.
+
+VQA DONE
